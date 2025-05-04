@@ -32,6 +32,7 @@ fn read_db_from_file(db_filename: &str) -> Result<Vec<String>, std::io::Error> {
     Ok(seen_episodes
         .trim()
         .lines()
+        .rev()
         .map(|s| s.to_string())
         .collect())
 }
@@ -96,7 +97,7 @@ mod test {
     #[test]
     fn read_db_from_file_reads_data_from_file() {
         let mut tmpfile = NamedTempFile::new().unwrap();
-        writeln!(tmpfile, "s01e01\ns01e02\n").unwrap();
+        writeln!(tmpfile, "s01e02\ns01e01\n").unwrap();
 
         let result = read_db_from_file(
             &tmpfile
