@@ -11,5 +11,5 @@ lint:
 	cargo clippy
 
 .PHONY: test
-test:
+test: lint
 	cargo test

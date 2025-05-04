@@ -37,14 +37,14 @@ fn read_db_from_file(db_filename: &str) -> Result<Vec<String>, std::io::Error> {
 }
 
 fn select_next_episode(seen_episodes: &[String]) -> &'static str {
-    let seen_set: std::collections::HashSet<_> = seen_episodes
+    let seen_set: std::collections::HashSet<&str> = seen_episodes
         .iter()
+        .map(|s| s.as_str())
         .collect();
 
-    #[allow(clippy::unnecessary_to_owned)]
     EPISODES
         .choose_multiple(&mut rand::rng(), EPISODES.len())
-        .find(|ep| !seen_set.contains(&ep.to_string()))
+        .find(|ep| !seen_set.contains(*ep))
         .expect("No unseen episodes available")
 }
 
@@ -55,18 +55,12 @@ fn save_db_to_file(seen_episodes: Vec<String>, db_filename: &str) -> Result<(), 
 
     let mut file = File::create(db_filename)?;
 
-    writeln!(
+    write!(
         file,
         "{}",
         seen_episodes
             .iter()
-            .fold(String::new(), |acc, s| {
-                if acc.is_empty() {
-                    s.clone()
-                } else {
-                    format!("{}\n{}", s, acc)
-                }
-            })
+            .fold(String::new(), |acc, s| format!("{}\n{}", s, acc))
     )?;
 
     Ok(())
