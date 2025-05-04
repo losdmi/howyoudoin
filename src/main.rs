@@ -3,14 +3,16 @@ use std::collections::HashMap;
 fn main() {
     let next_episode = match howyoudoin::get_next_episode() {
         Err(err) => {
-            eprint!("{err}");
+            eprintln!("{err}");
             return;
         }
         Ok(next_episode) => next_episode,
     };
 
     println!("{next_episode}");
-    println!("Press any key to exit...");
+    println!();
+
+    println!("Press Enter to exit...");
     let mut input = String::new();
     std::io::stdin()
         .read_line(&mut input)
