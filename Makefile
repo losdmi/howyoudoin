@@ -13,3 +13,7 @@ lint:
 .PHONY: test
 test: lint
 	cargo test
+
+.PHONY: build_for_windows
+build_for_windows:
+	cargo build --target x86_64-pc-windows-gnu --release
