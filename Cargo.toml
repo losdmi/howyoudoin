@@ -11,3 +11,10 @@ tempfile = "3.19.1"
 
 [lints.clippy]
 unwrap_used = "warn"
+
+[profile.release]
+opt-level = 'z'  # Optimize for size ('s' is less aggressive)
+lto = true       # Link-Time Optimization
+codegen-units = 1 # Slower build but better optimization
+panic = 'abort'  # Don't include panic unwinding info
+strip = true     # Remove debug symbols
